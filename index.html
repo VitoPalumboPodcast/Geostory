@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atlante evolutivo dei saperi</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Pannello di gestione">
+        <header class="brand">
+          <p class="eyebrow">Schema storico interattivo</p>
+          <h1>Atlante evolutivo</h1>
+          <p class="subtitle">Il passato scorre da destra verso sinistra: a sinistra si apre il futuro.</p>
+        </header>
+
+        <div class="toolbar">
+          <button id="addNodeBtn" class="primary" type="button">+ Nodo</button>
+          <button id="exportBtn" type="button">Esporta</button>
+          <button id="importBtn" type="button">Importa</button>
+          <input id="importFile" type="file" accept="application/json" hidden />
+        </div>
+
+        <label class="field">
+          <span>Cerca</span>
+          <input id="searchInput" type="search" placeholder="es. stampa, AI, musica" autocomplete="off" />
+        </label>
+
+        <div class="control-row">
+          <label class="switch">
+            <input id="flowsToggle" type="checkbox" checked />
+            <span>Flussi</span>
+          </label>
+          <label class="switch">
+            <input id="impactsToggle" type="checkbox" checked />
+            <span>Impatti</span>
+          </label>
+          <label class="field compact">
+            <span>Zoom</span>
+            <input id="zoomInput" type="range" min="55" max="120" value="82" />
+          </label>
+        </div>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>Ambiti</h2>
+            <div class="panel-actions">
+              <button id="showAllBtn" type="button">Tutti</button>
+              <button id="hideAllBtn" type="button">Nessuno</button>
+            </div>
+          </div>
+          <div id="laneFilters" class="filter-list"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Strategia immagini</h2>
+          <p class="note">Base consigliata: icone coerenti per tutti i nodi. Per oggetti chiave puoi caricare un'immagine o usare un prompt AI generato dall'app.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Materiali integrati</h2>
+          <p class="note">La mappa ora segue il foglio granulare: comunicazione orale, comunicazione a distanza, comunicazione pubblica, scrittura documentale, letteratura, memoria e ricerca sono corsie distinte. Le fasi sono soglie storiche che convivono, non tappe rigide.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Impatti trasversali</h2>
+          <div id="impactLegend" class="impact-legend"></div>
+          <p class="note">Le etichette colorate indicano effetti sull'uomo e sulla vita sociale: FOMO, consumismo, sovraccarico, controllo, rischio cognitivo e altri risvolti.</p>
+        </section>
+
+        <section class="panel inspector" aria-live="polite">
+          <div class="panel-heading">
+            <h2>Nodo selezionato</h2>
+            <button id="resetBtn" class="ghost-danger" type="button">Reset</button>
+          </div>
+          <div id="inspector"></div>
+        </section>
+      </aside>
+
+      <main class="stage-panel">
+        <div class="stage-top">
+          <div>
+            <p class="eyebrow">Mappa manipolabile</p>
+            <h2>Dal passato al futuro</h2>
+          </div>
+          <div id="stats" class="stats"></div>
+        </div>
+
+        <div id="stageScroller" class="stage-scroller" tabindex="0" aria-label="Area della mappa">
+          <div id="worldSizer" class="world-sizer">
+            <div id="world" class="world">
+              <svg id="flowsSvg" class="flows" aria-hidden="true"></svg>
+              <div id="timeAxis" class="time-axis"></div>
+              <div id="lanesLayer" class="lanes-layer"></div>
+              <div id="nodesLayer" class="nodes-layer"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <template id="emptyInspectorTemplate">
+      <div class="empty">
+        <strong>Seleziona un nodo</strong>
+        <p>Clicca un oggetto nella mappa per modificarne testo, ambito, posizione e immagine.</p>
+      </div>
+    </template>
+
+    <script src="app.js?v=13"></script>
+  </body>
+</html>
