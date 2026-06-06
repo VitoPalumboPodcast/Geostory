@@ -85,6 +85,22 @@ button:active {
   min-height: 100vh;
 }
 
+.app-shell.sidebar-hidden {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.app-shell.sidebar-hidden .sidebar {
+  display: none;
+}
+
+.app-shell.topbar-hidden .stage-panel {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.app-shell.topbar-hidden .stage-top {
+  display: none;
+}
+
 .sidebar {
   position: relative;
   z-index: 5;
@@ -98,6 +114,36 @@ button:active {
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 10px 0 28px rgba(28, 36, 29, 0.08);
   backdrop-filter: blur(18px);
+}
+
+.floating-chrome {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: 30;
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(220, 229, 216, 0.88);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 12px 30px rgba(28, 36, 29, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.floating-chrome button {
+  border-radius: 999px;
+  padding: 0.42rem 0.62rem;
+  color: var(--accent-strong);
+  background: rgba(247, 250, 245, 0.92);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.floating-chrome button[aria-pressed="false"] {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
 }
 
 .brand h1,
@@ -751,6 +797,10 @@ button:active {
     grid-template-columns: 1fr;
   }
 
+  .app-shell.sidebar-hidden {
+    grid-template-columns: 1fr;
+  }
+
   .sidebar {
     height: auto;
     max-height: 48vh;
@@ -760,5 +810,15 @@ button:active {
 
   .stage-panel {
     height: 52vh;
+  }
+
+  .app-shell.sidebar-hidden .stage-panel,
+  .app-shell.topbar-hidden .stage-panel {
+    height: 100vh;
+  }
+
+  .floating-chrome {
+    right: 0.6rem;
+    top: 0.6rem;
   }
 }

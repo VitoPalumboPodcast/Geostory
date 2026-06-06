@@ -3,12 +3,12 @@ const WORLD = {
   height: 4500,
   nodeWidth: 176,
   nodeHeight: 92,
-  minZoom: 0.42,
-  maxZoom: 1.45
+  minZoom: 0.05,
+  maxZoom: 5
 };
 
 const STORAGE_KEY = "atlante-evolutivo-state";
-const STORAGE_VERSION = 15;
+const STORAGE_VERSION = 16;
 const LANE_START_Y = 130;
 const LANE_STEP_Y = 180;
 
@@ -673,7 +673,9 @@ let state = {
   showFlows: true,
   showImpacts: true,
   zoom: 0.82,
-  interactionMode: "navigate"
+  interactionMode: "navigate",
+  sidebarVisible: true,
+  topbarVisible: true
 };
 
 let dragState = null;
@@ -696,6 +698,9 @@ const flowsToggle = document.getElementById("flowsToggle");
 const impactsToggle = document.getElementById("impactsToggle");
 const impactLegend = document.getElementById("impactLegend");
 const modeButtons = document.querySelectorAll("[data-mode]");
+const appShell = document.querySelector(".app-shell");
+const toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
+const toggleTopbarBtn = document.getElementById("toggleTopbarBtn");
 
 function node(id, lane, label, era, x, y, icon, notes) {
   return {
@@ -750,6 +755,8 @@ function loadState() {
     state.nodes = needsMigration ? mergeSeedNodes(nodes) : nodes.map((item) => normalizeNode(item));
     state.selectedId = parsed.selectedId || null;
     state.interactionMode = parsed.interactionMode === "edit" ? "edit" : "navigate";
+    state.sidebarVisible = parsed.sidebarVisible !== false;
+    state.topbarVisible = parsed.topbarVisible !== false;
     if (needsMigration) saveState();
   } catch {
     state.nodes = structuredClone(seedNodes);
@@ -803,7 +810,9 @@ function saveState() {
       version: STORAGE_VERSION,
       nodes: state.nodes,
       selectedId: state.selectedId,
-      interactionMode: state.interactionMode
+      interactionMode: state.interactionMode,
+      sidebarVisible: state.sidebarVisible,
+      topbarVisible: state.topbarVisible
     })
   );
 }
@@ -819,6 +828,7 @@ function render() {
   renderStats();
   applyZoom();
   renderInteractionMode();
+  renderChromeVisibility();
 }
 
 function renderImpactLegend() {
@@ -1215,6 +1225,16 @@ function renderInteractionMode() {
   });
 }
 
+function renderChromeVisibility() {
+  appShell.classList.toggle("sidebar-hidden", !state.sidebarVisible);
+  appShell.classList.toggle("topbar-hidden", !state.topbarVisible);
+
+  toggleSidebarBtn.textContent = state.sidebarVisible ? "Nascondi menu" : "Mostra menu";
+  toggleTopbarBtn.textContent = state.topbarVisible ? "Nascondi alto" : "Mostra alto";
+  toggleSidebarBtn.setAttribute("aria-pressed", state.sidebarVisible ? "true" : "false");
+  toggleTopbarBtn.setAttribute("aria-pressed", state.topbarVisible ? "true" : "false");
+}
+
 function getViewportCenterWorldPoint() {
   const scrollerRect = stageScroller.getBoundingClientRect();
   return screenToWorld({
@@ -1225,7 +1245,7 @@ function getViewportCenterWorldPoint() {
 
 function setZoom(nextZoom) {
   const center = getViewportCenterWorldPoint();
-  state.zoom = clamp(nextZoom, 0.55, 1.2);
+  state.zoom = clamp(nextZoom, WORLD.minZoom, WORLD.maxZoom);
   applyZoom();
   syncZoomInput();
 
@@ -1244,7 +1264,7 @@ function setZoom(nextZoom) {
 function setZoomAt(nextZoom, point) {
   const before = screenToWorld(point);
   const scrollerRect = stageScroller.getBoundingClientRect();
-  state.zoom = clamp(nextZoom, 0.55, 1.2);
+  state.zoom = clamp(nextZoom, WORLD.minZoom, WORLD.maxZoom);
   applyZoom();
   syncZoomInput();
 
@@ -1454,6 +1474,18 @@ function setupEvents() {
       renderInteractionMode();
       saveState();
     });
+  });
+
+  toggleSidebarBtn.addEventListener("click", () => {
+    state.sidebarVisible = !state.sidebarVisible;
+    renderChromeVisibility();
+    saveState();
+  });
+
+  toggleTopbarBtn.addEventListener("click", () => {
+    state.topbarVisible = !state.topbarVisible;
+    renderChromeVisibility();
+    saveState();
   });
 
   zoomInput.addEventListener("input", (event) => {

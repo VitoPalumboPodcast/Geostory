@@ -42,7 +42,7 @@
           </label>
           <label class="field compact">
             <span>Zoom</span>
-            <input id="zoomInput" type="range" min="55" max="120" value="82" />
+            <input id="zoomInput" type="range" min="5" max="500" value="82" />
           </label>
         </div>
 
@@ -104,6 +104,11 @@
       </main>
     </div>
 
+    <div class="floating-chrome" aria-label="Visibilita pannelli">
+      <button id="toggleSidebarBtn" type="button" aria-pressed="true">Menu</button>
+      <button id="toggleTopbarBtn" type="button" aria-pressed="true">Barra alto</button>
+    </div>
+
     <template id="emptyInspectorTemplate">
       <div class="empty">
         <strong>Seleziona un nodo</strong>
@@ -111,6 +116,6 @@
       </div>
     </template>
 
-    <script src="app.js?v=15"></script>
+    <script src="app.js?v=16"></script>
   </body>
 </html>
