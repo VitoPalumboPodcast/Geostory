@@ -8,7 +8,7 @@ const WORLD = {
 };
 
 const STORAGE_KEY = "atlante-evolutivo-state";
-const STORAGE_VERSION = 14;
+const STORAGE_VERSION = 15;
 const LANE_START_Y = 130;
 const LANE_STEP_Y = 180;
 
@@ -672,11 +672,13 @@ let state = {
   activeLanes: new Set(lanes.map((lane) => lane.id)),
   showFlows: true,
   showImpacts: true,
-  zoom: 0.82
+  zoom: 0.82,
+  interactionMode: "navigate"
 };
 
 let dragState = null;
 let panState = null;
+let suppressNextClick = false;
 
 const worldSizer = document.getElementById("worldSizer");
 const world = document.getElementById("world");
@@ -693,6 +695,7 @@ const zoomInput = document.getElementById("zoomInput");
 const flowsToggle = document.getElementById("flowsToggle");
 const impactsToggle = document.getElementById("impactsToggle");
 const impactLegend = document.getElementById("impactLegend");
+const modeButtons = document.querySelectorAll("[data-mode]");
 
 function node(id, lane, label, era, x, y, icon, notes) {
   return {
@@ -746,6 +749,7 @@ function loadState() {
     const needsMigration = parsed.version !== STORAGE_VERSION || hasInvalidGeometry(nodes);
     state.nodes = needsMigration ? mergeSeedNodes(nodes) : nodes.map((item) => normalizeNode(item));
     state.selectedId = parsed.selectedId || null;
+    state.interactionMode = parsed.interactionMode === "edit" ? "edit" : "navigate";
     if (needsMigration) saveState();
   } catch {
     state.nodes = structuredClone(seedNodes);
@@ -798,7 +802,8 @@ function saveState() {
     JSON.stringify({
       version: STORAGE_VERSION,
       nodes: state.nodes,
-      selectedId: state.selectedId
+      selectedId: state.selectedId,
+      interactionMode: state.interactionMode
     })
   );
 }
@@ -813,6 +818,7 @@ function render() {
   renderInspector();
   renderStats();
   applyZoom();
+  renderInteractionMode();
 }
 
 function renderImpactLegend() {
@@ -1200,6 +1206,15 @@ function applyZoom() {
   world.style.transform = `scale(${state.zoom})`;
 }
 
+function renderInteractionMode() {
+  stageScroller.dataset.mode = state.interactionMode;
+  modeButtons.forEach((button) => {
+    const active = button.dataset.mode === state.interactionMode;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+}
+
 function getViewportCenterWorldPoint() {
   const scrollerRect = stageScroller.getBoundingClientRect();
   return screenToWorld({
@@ -1212,6 +1227,7 @@ function setZoom(nextZoom) {
   const center = getViewportCenterWorldPoint();
   state.zoom = clamp(nextZoom, 0.55, 1.2);
   applyZoom();
+  syncZoomInput();
 
   stageScroller.scrollLeft = clamp(
     center.x * state.zoom - stageScroller.clientWidth / 2,
@@ -1223,6 +1239,29 @@ function setZoom(nextZoom) {
     0,
     Math.max(0, WORLD.height * state.zoom - stageScroller.clientHeight)
   );
+}
+
+function setZoomAt(nextZoom, point) {
+  const before = screenToWorld(point);
+  const scrollerRect = stageScroller.getBoundingClientRect();
+  state.zoom = clamp(nextZoom, 0.55, 1.2);
+  applyZoom();
+  syncZoomInput();
+
+  stageScroller.scrollLeft = clamp(
+    before.x * state.zoom - (point.clientX - scrollerRect.left),
+    0,
+    Math.max(0, WORLD.width * state.zoom - stageScroller.clientWidth)
+  );
+  stageScroller.scrollTop = clamp(
+    before.y * state.zoom - (point.clientY - scrollerRect.top),
+    0,
+    Math.max(0, WORLD.height * state.zoom - stageScroller.clientHeight)
+  );
+}
+
+function syncZoomInput() {
+  zoomInput.value = String(Math.round(state.zoom * 100));
 }
 
 function screenToWorld(point) {
@@ -1409,9 +1448,28 @@ function setupEvents() {
     renderInspector();
   });
 
+  modeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      state.interactionMode = button.dataset.mode === "edit" ? "edit" : "navigate";
+      renderInteractionMode();
+      saveState();
+    });
+  });
+
   zoomInput.addEventListener("input", (event) => {
     setZoom(Number(event.target.value) / 100);
   });
+
+  stageScroller.addEventListener(
+    "wheel",
+    (event) => {
+      if (event.target.closest("input, textarea, select")) return;
+      event.preventDefault();
+      const factor = Math.exp(-event.deltaY * 0.0012);
+      setZoomAt(state.zoom * factor, { clientX: event.clientX, clientY: event.clientY });
+    },
+    { passive: false }
+  );
 
   laneFilters.addEventListener("change", (event) => {
     const checkbox = event.target.closest("[data-filter]");
@@ -1431,6 +1489,11 @@ function setupEvents() {
   nodesLayer.addEventListener("pointerdown", startDrag);
   stageScroller.addEventListener("pointerdown", startPan);
   nodesLayer.addEventListener("click", (event) => {
+    if (suppressNextClick) {
+      suppressNextClick = false;
+      event.preventDefault();
+      return;
+    }
     const nodeElement = event.target.closest(".node");
     if (!nodeElement) return;
     selectNode(nodeElement.dataset.id);
@@ -1478,6 +1541,7 @@ function setupEvents() {
 }
 
 function startDrag(event) {
+  if (state.interactionMode !== "edit") return;
   const nodeElement = event.target.closest(".node");
   if (!nodeElement) return;
   if (event.button !== 0) return;
@@ -1523,14 +1587,15 @@ function startDrag(event) {
 
 function startPan(event) {
   if (event.button !== 0) return;
-  if (event.target.closest(".node")) return;
+  if (event.target.closest(".node") && state.interactionMode === "edit") return;
   if (event.target.closest("button, input, select, textarea, label")) return;
 
   panState = {
     startX: event.clientX,
     startY: event.clientY,
     scrollLeft: stageScroller.scrollLeft,
-    scrollTop: stageScroller.scrollTop
+    scrollTop: stageScroller.scrollTop,
+    moved: false
   };
 
   stageScroller.classList.add("panning");
@@ -1540,6 +1605,9 @@ function startPan(event) {
 
   function onPanMove(moveEvent) {
     if (!panState) return;
+    const dx = moveEvent.clientX - panState.startX;
+    const dy = moveEvent.clientY - panState.startY;
+    if (Math.abs(dx) + Math.abs(dy) > 5) panState.moved = true;
     stageScroller.scrollLeft = panState.scrollLeft - (moveEvent.clientX - panState.startX);
     stageScroller.scrollTop = panState.scrollTop - (moveEvent.clientY - panState.startY);
   }
@@ -1547,6 +1615,12 @@ function startPan(event) {
   function stopPan() {
     window.removeEventListener("pointermove", onPanMove);
     stageScroller.classList.remove("panning");
+    if (panState?.moved) {
+      suppressNextClick = true;
+      window.setTimeout(() => {
+        suppressNextClick = false;
+      }, 0);
+    }
     panState = null;
   }
 }

@@ -153,6 +153,35 @@ button:active {
   min-width: 120px;
 }
 
+.mode-toggle {
+  display: inline-flex;
+  flex: 1 1 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfdf9;
+}
+
+.mode-button {
+  flex: 1;
+  border: 0;
+  border-radius: 0;
+  padding: 0.48rem 0.62rem;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.mode-button:hover {
+  transform: none;
+}
+
+.mode-button.active {
+  color: #fff;
+  background: var(--accent);
+}
+
 .toolbar button {
   flex: 1 1 auto;
 }
@@ -368,6 +397,18 @@ button:active {
 
 .stage-scroller.panning {
   cursor: grabbing;
+}
+
+.stage-scroller[data-mode="edit"] {
+  cursor: grab;
+}
+
+.stage-scroller[data-mode="navigate"] .node {
+  cursor: pointer;
+}
+
+.stage-scroller[data-mode="edit"] .node {
+  cursor: grab;
 }
 
 .world-sizer {
