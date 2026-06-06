@@ -778,29 +778,32 @@ button:active {
 
 .lane::before {
   position: absolute;
-  top: -1.55rem;
+  top: 82%;
   left: 0;
-  width: 156px;
+  box-sizing: border-box;
+  width: 164px;
+  transform: translateY(-50%);
   border-left: 5px solid var(--lane-color);
   border-radius: 6px;
-  padding: 0.28rem 0.5rem;
+  padding: 0.34rem 0.52rem;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 10px 24px rgba(28, 36, 29, 0.07);
   content: attr(data-label);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 900;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.08;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
   text-transform: uppercase;
 }
 
 .node {
   position: absolute;
   display: grid;
-  grid-template-columns: 46px 1fr;
-  gap: 0.55rem;
+  grid-template-columns: 56px 1fr;
+  gap: 0.5rem;
   align-items: center;
   width: var(--node-width);
   min-height: var(--node-height);
@@ -900,8 +903,8 @@ button:active {
 .node-visual {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   overflow: hidden;
   border-radius: 10px;
   background:
@@ -917,8 +920,8 @@ button:active {
 }
 
 .icon-svg {
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
   color: var(--node-color, var(--accent));
   fill: none;
   stroke: currentColor;
@@ -944,14 +947,14 @@ button:active {
 .node-visual .emoji-icon,
 .preview-box .emoji-icon {
   display: block;
-  font-size: 1.55rem;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 1;
   filter: drop-shadow(0 1px 1px rgba(26, 47, 34, 0.18));
 }
 
 .preview-box .emoji-icon {
-  font-size: 1.9rem;
+  font-size: 2.15rem;
 }
 
 .node-title {
