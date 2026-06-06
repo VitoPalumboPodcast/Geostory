@@ -8,7 +8,7 @@ const WORLD = {
 };
 
 const STORAGE_KEY = "atlante-evolutivo-state";
-const STORAGE_VERSION = 16;
+const STORAGE_VERSION = 17;
 const LANE_START_Y = 130;
 const LANE_STEP_Y = 180;
 
@@ -467,10 +467,19 @@ const impactCatalog = {
   ansia: { label: "ansia", emoji: "!", color: "#c2410c" },
   dipendenza: { label: "dipendenza", emoji: "↻", color: "#0891b2" },
   privacy: { label: "privacy", emoji: "🔒", color: "#0f766e" },
-  creativita: { label: "creativita aumentata", emoji: "✦", color: "#a16207" }
-  ,
+  creativita: { label: "creativita aumentata", emoji: "✦", color: "#a16207" },
   escalation: { label: "escalation", emoji: "!", color: "#991b1b" },
-  trauma: { label: "trauma", emoji: "!", color: "#581c87" }
+  trauma: { label: "trauma", emoji: "!", color: "#581c87" },
+  appartenenza: { label: "appartenenza", emoji: "🤝", color: "#15803d" },
+  accessibilita: { label: "accessibilita", emoji: "♿", color: "#0369a1" },
+  disuguaglianza: { label: "disuguaglianza", emoji: "≠", color: "#b45309" },
+  lavoro: { label: "lavoro trasformato", emoji: "⚙", color: "#4b5563" },
+  sostenibilita: { label: "sostenibilita", emoji: "🌱", color: "#16a34a" },
+  accelerazione: { label: "accelerazione", emoji: "⏩", color: "#ea580c" },
+  memoria: { label: "memoria estesa", emoji: "▣", color: "#475569" },
+  sicurezza: { label: "sicurezza", emoji: "◆", color: "#0f172a" },
+  attenzione: { label: "attenzione catturata", emoji: "◉", color: "#7c2d12" },
+  cura: { label: "cura e benessere", emoji: "♥", color: "#be185d" }
 };
 
 const nodeImpacts = {
@@ -665,6 +674,86 @@ Object.assign(iconPaths, {
   museum: iconPaths.university
 });
 
+const coloredIconEmoji = {
+  ai: "🤖",
+  monitor: "🖥️",
+  book: "📚",
+  university: "🎓",
+  speech: "🗣️",
+  smartphone: "📱",
+  social: "🌐",
+  mail: "✉️",
+  chat: "💬",
+  phone: "☎️",
+  newspaper: "📰",
+  runner: "🏃",
+  music: "🎵",
+  play: "▶️",
+  radio: "📻",
+  disc: "💿",
+  camera: "📷",
+  film: "🎞️",
+  pen: "✒️",
+  cave: "🪨",
+  cart: "🛒",
+  search: "🔎",
+  factory: "🏭",
+  coin: "🪙",
+  bitcoin: "₿",
+  card: "💳",
+  chart: "📈",
+  bond: "📜",
+  trade: "🤝",
+  city: "🏙️",
+  gps: "📍",
+  car: "🚗",
+  train: "🚆",
+  road: "🛣️",
+  health: "❤️",
+  watch: "⌚",
+  vaccine: "💉",
+  hospital: "🏥",
+  leaf: "🌿",
+  robot: "🤖",
+  drone: "✈️",
+  grid: "🔌",
+  steam: "♨️",
+  mill: "⚙️",
+  fire: "🔥",
+  id: "🪪",
+  government: "🏛️",
+  vote: "🗳️",
+  democracy: "🏛️",
+  law: "⚖️",
+  group: "👥",
+  empathy: "💚",
+  alert: "⚠️",
+  target: "🎯",
+  bow: "🏹",
+  shield: "🛡️",
+  info: "ℹ️",
+  public: "📣",
+  ritual: "🕯️",
+  myth: "✨",
+  theater: "🎭",
+  print: "🖨️",
+  school: "🏫",
+  people: "👥",
+  video: "🎬",
+  tv: "📺",
+  computer: "💻",
+  cloud: "☁️",
+  software: "🧩",
+  gamepad: "🎮",
+  plane: "✈️",
+  map: "🗺️",
+  sport: "🏃",
+  paint: "🎨",
+  hand: "✋",
+  museum: "🏛️",
+  sparkles: "✨"
+};
+
 let state = {
   nodes: [],
   selectedId: null,
@@ -832,7 +921,8 @@ function render() {
 }
 
 function renderImpactLegend() {
-  const used = new Set(Object.values(nodeImpacts).flat());
+  const sourceNodes = state.nodes.length ? state.nodes : seedNodes;
+  const used = new Set(sourceNodes.flatMap((item) => getNodeImpactKeys(item)));
   impactLegend.innerHTML = Object.entries(impactCatalog)
     .filter(([key]) => used.has(key))
     .map(
@@ -902,10 +992,56 @@ function nodeMatches(item) {
   return text.includes(query);
 }
 
+const laneImpactDefaults = {
+  "comm-body": ["appartenenza", "autenticita"],
+  "comm-distance": ["privacy", "sovraccarico"],
+  "comm-public": ["disinformazione", "attenzione"],
+  "write-doc": ["memoria", "controllo"],
+  literature: ["creativita", "appartenenza"],
+  image: ["autenticita", "creativita"],
+  sound: ["creativita", "dipendenza"],
+  audiovisual: ["attenzione", "autenticita"],
+  education: ["accessibilita", "delega"],
+  research: ["creativita", "memoria"],
+  memory: ["memoria", "privacy"],
+  calculation: ["delega", "controllo"],
+  programming: ["lavoro", "delega"],
+  energy: ["sostenibilita", "controllo"],
+  economy: ["consumismo", "disuguaglianza"],
+  labor: ["lavoro", "ansia"],
+  transport: ["accelerazione", "sostenibilita"],
+  health: ["cura", "privacy"],
+  wellbeing: ["cura", "ansia"],
+  play: ["dipendenza", "appartenenza"],
+  war: ["trauma", "escalation"],
+  security: ["sicurezza", "controllo"],
+  law: ["controllo", "disuguaglianza"],
+  politics: ["controllo", "disinformazione"]
+};
+
+const stepImpactDefaults = {
+  ai: ["delega", "creativita"],
+  digital: ["sovraccarico", "privacy"],
+  electronic: ["attenzione", "dipendenza"],
+  industrial: ["lavoro", "accelerazione"],
+  print: ["memoria", "accessibilita"],
+  written: ["controllo", "memoria"],
+  oral: ["appartenenza", "isolamento"]
+};
+
+function getStepKey(item) {
+  const id = String(item.id || "");
+  return axisSteps.find((step) => id.endsWith(`-${step.key}`))?.key || "";
+}
+
 function inferImpactKeys(item) {
-  const text = `${item.id} ${item.label} ${item.notes || ""}`.toLowerCase();
+  const lane = getLane(item.lane);
+  const text = `${item.id} ${item.label} ${item.notes || ""} ${lane.label}`.toLowerCase();
   const keys = [];
   const add = (...items) => items.forEach((key) => keys.push(key));
+
+  add(...(laneImpactDefaults[item.lane] || []));
+  add(...(stepImpactDefaults[getStepKey(item)] || []));
 
   if (/social|tiktok|instagram|whatsapp|notific|piattaform|chat|creator|streaming/.test(text)) add("fomo", "sovraccarico", "dipendenza");
   if (/pubblicit|marketing|e-commerce|consum|spot|marketplace|bestseller|credito|trading|debit/.test(text)) add("consumismo");
@@ -913,12 +1049,18 @@ function inferImpactKeys(item) {
   if (/sorveglianza|biometr|scoring|sicurezza predittiva|controllo automat/.test(text)) add("privacy", "controllo");
   if (/guerra|bellic|armi|droni militari|cyber|nucleare|sabotaggio/.test(text)) add("ansia", "trauma", "escalation");
   if (/tutor|apprendimento|educaz|scuola|universit|coach/.test(text)) add("creativita", "delega");
-  if (/diagnosi|medicina|salute|cura|benessere|telemedicina|wearable/.test(text)) add("ansia", "privacy");
+  if (/diagnosi|medicina|salute|cura|benessere|telemedicina|wearable/.test(text)) add("cura", "ansia", "privacy");
   if (/automazione|robot|agentic|algoritm|ia|generativ|automatic/.test(text)) add("delega", "creativita");
-  if (/archiv|memoria|cloud|database|document/.test(text)) add("sovraccarico", "privacy");
-  if (/baratto|dono|reciproc|gruppo|comunit|rito|piazza/.test(text)) add("isolamento");
+  if (/archiv|memoria|cloud|database|document/.test(text)) add("memoria", "sovraccarico", "privacy");
+  if (/baratto|dono|reciproc|gruppo|comunit|rito|piazza/.test(text)) add("appartenenza");
+  if (/bitcoin|blockchain|borsa|mercato azionario|obbligaz|moneta|credito|finanza/.test(text)) add("privacy", "disuguaglianza", "consumismo");
+  if (/energia|elettric|petrolio|carbone|fusione|rinnovabil|rete elettrica/.test(text)) add("sostenibilita", "controllo");
+  if (/trasport|gps|auto|treno|nave|aereo|strada|ruota/.test(text)) add("accelerazione", "sostenibilita");
+  if (/identita|legge|diritto|voto|democrazia|govern|stato|tribunal/.test(text)) add("controllo", "sicurezza");
+  if (/gioco|videogioco|sport|intrattenimento|gamification/.test(text)) add("dipendenza", "appartenenza");
+  if (/poesia|romanzo|racconto|miti|teatro|arte|pittura|immagine|musica|cinema/.test(text)) add("creativita", "attenzione");
 
-  return keys;
+  return keys.length ? keys : ["attenzione"];
 }
 
 function getNodeImpactKeys(item) {
@@ -958,6 +1100,10 @@ function resolveIconName(item) {
 
 function renderIcon(item) {
   const iconName = resolveIconName(item);
+  const emojiIcon = coloredIconEmoji[iconName];
+  if (emojiIcon) {
+    return `<span class="emoji-icon" aria-hidden="true">${escapeHtml(emojiIcon)}</span>`;
+  }
   return `
     <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       ${iconPaths[iconName] || iconPaths.sparkles}
