@@ -1,5 +1,5 @@
 const WORLD = {
-  width: 2600,
+  width: 2900,
   height: 4500,
   nodeWidth: 176,
   nodeHeight: 92,
@@ -8,18 +8,18 @@ const WORLD = {
 };
 
 const STORAGE_KEY = "atlante-evolutivo-state";
-const STORAGE_VERSION = 17;
+const STORAGE_VERSION = 18;
 const LANE_START_Y = 130;
 const LANE_STEP_Y = 180;
 
 const axisSteps = [
-  { key: "ai", x: 180, label: "IA e generazione" },
-  { key: "digital", x: 500, label: "digitale, rete, piattaforme" },
-  { key: "electronic", x: 820, label: "elettronica e mass media" },
-  { key: "industrial", x: 1080, label: "industria, elettricita, distanza" },
-  { key: "print", x: 1380, label: "stampa, meccanica, archivi" },
-  { key: "written", x: 1780, label: "scrittura, simboli, istituzioni" },
-  { key: "oral", x: 2300, label: "corpo, oralita, esperienza diretta" }
+  { key: "ai", x: 480, label: "IA e generazione" },
+  { key: "digital", x: 800, label: "digitale, rete, piattaforme" },
+  { key: "electronic", x: 1120, label: "elettronica e mass media" },
+  { key: "industrial", x: 1380, label: "industria, elettricita, distanza" },
+  { key: "print", x: 1680, label: "stampa, meccanica, archivi" },
+  { key: "written", x: 2080, label: "scrittura, simboli, istituzioni" },
+  { key: "oral", x: 2600, label: "corpo, oralita, esperienza diretta" }
 ];
 
 const timeMarkers = axisSteps.map((step) => ({
@@ -980,6 +980,177 @@ const futureScenarioTracks = {
   }
 };
 
+const laneFutureScenarios = {
+  "comm-body": {
+    title: "Avatar, voce sintetica e presenza aumentata",
+    horizon: "2026-2035",
+    summary: "Traduzione in tempo reale, avatar personali, interfacce vocali persistenti e segnali corporei letti da sensori renderanno piu fluido parlare con persone e sistemi artificiali.",
+    signals: "Assistenti vocali multimodali, occhiali AR, avatar realistici, norme su identita sintetica.",
+    impacts: ["autenticita", "privacy", "delega"]
+  },
+  "comm-distance": {
+    title: "Messaggi delegati e agenti personali",
+    horizon: "2026-2035",
+    summary: "La comunicazione a distanza tendera a essere filtrata da agenti: risposte automatiche, priorita, riassunti, negoziazioni e gestione dei gruppi.",
+    signals: "Inbox autonome, agenti che prenotano/negoziano, certificazione dell'umano o del bot.",
+    impacts: ["sovraccarico", "privacy", "isolamento"]
+  },
+  "comm-public": {
+    title: "Media sintetici e fiducia pubblica",
+    horizon: "2026-2035",
+    summary: "Contenuti generati, microtargeting e verifica di provenienza renderanno centrale distinguere fonte, intenzione, manipolazione e reputazione.",
+    signals: "Watermark, provenance, deepfake politici, media personalizzati in tempo reale.",
+    impacts: ["disinformazione", "attenzione", "controllo"]
+  },
+  "write-doc": {
+    title: "Documenti vivi e burocrazia automatica",
+    horizon: "2026-2035",
+    summary: "Contratti, verbali, report, fascicoli e pratiche diventeranno oggetti interrogabili e aggiornabili da agenti, con audit e responsabilita come nodo critico.",
+    signals: "Workflow documentali AI, firme/verifiche automatiche, archivi pubblici interrogabili.",
+    impacts: ["memoria", "controllo", "privacy"]
+  },
+  literature: {
+    title: "Autorialita ibrida e nuovi generi",
+    horizon: "2026-2035",
+    summary: "La scrittura letteraria si aprira a coautori artificiali, personaggi generativi, romanzi personalizzati e tensioni su stile, copyright e autenticita.",
+    signals: "Libri generativi, fanfiction AI, licenze sullo stile, editoria iper-personalizzata.",
+    impacts: ["creativita", "autenticita", "disuguaglianza"]
+  },
+  image: {
+    title: "Immagini generative come linguaggio ordinario",
+    horizon: "2026-2035",
+    summary: "La produzione visiva diventera conversazionale: generare, correggere e animare immagini sara normale quanto fotografare o scrivere.",
+    signals: "Fotocamere generative, provenance visiva, archivi sintetici, dispute su realta e prova.",
+    impacts: ["autenticita", "creativita", "sovraccarico"]
+  },
+  sound: {
+    title: "Voci, musica e ambienti sonori sintetici",
+    horizon: "2026-2035",
+    summary: "Musica generativa, cloni vocali, doppiaggio istantaneo e sound design personale cambieranno produzione, identita e mercato dell'ascolto.",
+    signals: "Voice licensing, musica infinita, filtri vocali, autenticazione della voce.",
+    impacts: ["creativita", "autenticita", "dipendenza"]
+  },
+  audiovisual: {
+    title: "Video generativo e cinema modulare",
+    horizon: "2026-2035",
+    summary: "Video lunghi sintetici, previsualizzazione automatica, attori digitali e montaggio agentico allargheranno la produzione audiovisiva.",
+    signals: "Spot interamente generativi, serie personalizzate, attori sintetici, accordi sindacali.",
+    impacts: ["attenzione", "lavoro", "autenticita"]
+  },
+  education: {
+    title: "Tutor personali e scuola adattiva",
+    horizon: "2026-2035",
+    summary: "Ogni studente potra avere tutor, simulazioni e percorsi adattivi. Il problema sara garantire equita, motivazione, valutazione e presenza umana.",
+    signals: "Tutor AI certificati, compiti orali, portfolio dinamici, nuove prove anti-delega.",
+    impacts: ["accessibilita", "delega", "disuguaglianza"]
+  },
+  research: {
+    title: "Scoperta assistita e laboratori automatizzati",
+    horizon: "2026-2035",
+    summary: "AI per ipotesi, codice, letteratura, simulazioni e robot-lab accelerera ricerca e brevetti, ma anche verifiche e riproducibilita.",
+    signals: "AI scientist, laboratori robotici, review automatizzata, crisi o boom della riproducibilita.",
+    impacts: ["creativita", "accelerazione", "sicurezza"]
+  },
+  memory: {
+    title: "Memoria personale e archivi interrogabili",
+    horizon: "2026-2035",
+    summary: "La memoria diventera ricercabile: life logging, archivi familiari, istituzionali e aziendali, con tensione tra cura, controllo e oblio.",
+    signals: "Assistenti con memoria lunga, diritto all'oblio, archivi generativi, timeline personali.",
+    impacts: ["memoria", "privacy", "controllo"]
+  },
+  calculation: {
+    title: "Calcolo come infrastruttura cognitiva",
+    horizon: "2026-2035",
+    summary: "Modelli, simulazioni, digital twin e calcolo specializzato sosterranno decisioni in economia, clima, sanita, logistica e sicurezza.",
+    signals: "Digital twin urbani, chip AI, calcolo quantistico utile in nicchie, audit dei modelli.",
+    impacts: ["delega", "controllo", "sostenibilita"]
+  },
+  programming: {
+    title: "Software scritto da agenti",
+    horizon: "2026-2035",
+    summary: "La programmazione passera da scrivere codice a specificare obiettivi, testare, verificare e governare squadre di agenti software.",
+    signals: "Repo gestite da agenti, test automatici, software self-healing, sicurezza supply-chain.",
+    impacts: ["lavoro", "delega", "sicurezza"]
+  },
+  energy: {
+    title: "Reti intelligenti e fame di energia",
+    horizon: "2026-2035",
+    summary: "Elettrificazione, data center, storage, rinnovabili, nucleare avanzato e demand response renderanno l'energia un vincolo centrale del futuro digitale.",
+    signals: "Accordi data center-energia, batterie di rete, SMR, smart grid, prezzi dinamici.",
+    impacts: ["sostenibilita", "controllo", "disuguaglianza"]
+  },
+  economy: {
+    title: "Finanza tokenizzata e agenti economici",
+    horizon: "2026-2035",
+    summary: "Pagamenti programmabili, mercati tokenizzati, agenti che comprano/vendono e finanza AI-driven potranno aumentare efficienza e instabilita.",
+    signals: "CBDC, stablecoin regolamentate, asset tokenizzati, agenti di trading personali.",
+    impacts: ["consumismo", "privacy", "disuguaglianza"]
+  },
+  labor: {
+    title: "Automazione dei task e riconfigurazione del lavoro",
+    horizon: "2026-2035",
+    summary: "Molti mestieri cambieranno per task: meno routine, piu supervisione, cura, creativita, verifica e coordinamento uomo-macchina.",
+    signals: "Contratti AI, reskilling, settimane corte, nuovi indicatori di produttivita.",
+    impacts: ["lavoro", "ansia", "disuguaglianza"]
+  },
+  transport: {
+    title: "Mobilita autonoma e logistica predittiva",
+    horizon: "2026-2035",
+    summary: "Guida assistita/autonoma, droni logistici, flotte elettriche e piattaforme predittive cambieranno citta, lavoro e tempi di consegna.",
+    signals: "Robotaxi, corridoi drone, logistica urbana, infrastrutture di ricarica intelligenti.",
+    impacts: ["accelerazione", "sostenibilita", "sicurezza"]
+  },
+  health: {
+    title: "Medicina preventiva e diagnosi aumentata",
+    horizon: "2026-2035",
+    summary: "AI diagnostica, wearable, genomica, farmaci progettati e telemedicina sposteranno la sanita verso prevenzione e personalizzazione.",
+    signals: "AI cliniche certificate, trial sintetici, digital therapeutics, cartelle interoperabili.",
+    impacts: ["cura", "privacy", "accessibilita"]
+  },
+  wellbeing: {
+    title: "Compagni, coach e salute mentale digitale",
+    horizon: "2026-2035",
+    summary: "Coach personali, companion AI e monitoraggio continuo aiuteranno benessere e fragilita, ma potranno creare dipendenza e sostituire relazioni.",
+    signals: "Companion regolati, terapia digitale, metriche emotive, wearable affettivi.",
+    impacts: ["cura", "dipendenza", "isolamento"]
+  },
+  play: {
+    title: "Mondi generativi e intrattenimento adattivo",
+    horizon: "2026-2035",
+    summary: "Giochi, sport, social VR e narrazioni interattive saranno generati e adattati in tempo reale al giocatore o alla comunita.",
+    signals: "NPC agentici, mondi persistenti AI, sport data-driven, creator game engine.",
+    impacts: ["dipendenza", "creativita", "appartenenza"]
+  },
+  war: {
+    title: "Guerra liminale, cognitiva e autonoma",
+    horizon: "2026-2035",
+    summary: "La guerra tendera a restare sotto soglia: cyber, droni, sciami, spazio, cognitive warfare, mosaic warfare e comando algoritmico.",
+    signals: "Sciami, jamming, deepfake strategici, armi a energia diretta, C2 assistito da AI.",
+    impacts: ["escalation", "trauma", "disinformazione"]
+  },
+  security: {
+    title: "Sicurezza predittiva e identita verificabile",
+    horizon: "2026-2035",
+    summary: "Identita digitale, biometria, cyberdifesa AI e sistemi predittivi cresceranno, con tensione costante tra protezione e sorveglianza.",
+    signals: "Passkey, wallet identitari, SOC autonomi, attacchi AI, sorveglianza biometrica.",
+    impacts: ["sicurezza", "privacy", "controllo"]
+  },
+  law: {
+    title: "Diritto computazionale e responsabilita AI",
+    horizon: "2026-2035",
+    summary: "Contratti intelligenti, assistenti legali e norme su AI, dati, responsabilita e prova digitale renderanno il diritto piu computazionale.",
+    signals: "AI Act applicato, contenziosi su output AI, smart contract, giudizi assistiti.",
+    impacts: ["controllo", "accessibilita", "disuguaglianza"]
+  },
+  politics: {
+    title: "Governance algoritmica e sovranita tecnologica",
+    horizon: "2026-2035",
+    summary: "Stati, citta e istituzioni useranno AI per servizi, sicurezza e decisioni; cresceranno sovranita digitale, propaganda sintetica e bisogno di audit democratico.",
+    signals: "AI nei servizi pubblici, cloud sovrani, elezioni con deepfake, trattati su calcolo.",
+    impacts: ["controllo", "disinformazione", "sicurezza"]
+  }
+};
+
 let state = {
   nodes: [],
   selectedId: null,
@@ -1005,6 +1176,7 @@ const stageScroller = document.getElementById("stageScroller");
 const flowsSvg = document.getElementById("flowsSvg");
 const timeAxis = document.getElementById("timeAxis");
 const lanesLayer = document.getElementById("lanesLayer");
+const futureLayer = document.getElementById("futureLayer");
 const nodesLayer = document.getElementById("nodesLayer");
 const laneFilters = document.getElementById("laneFilters");
 const inspector = document.getElementById("inspector");
@@ -1150,9 +1322,9 @@ function render() {
   renderImpactLegend();
   renderNodes();
   renderFlows();
+  renderFutureLayer();
   renderInspector();
   renderStats();
-  renderScenarioDock();
   applyZoom();
   renderInteractionMode();
   renderChromeVisibility();
@@ -1466,6 +1638,76 @@ function renderStats() {
   stats.textContent = `${visibleCount} nodi visibili / ${state.nodes.length} totali`;
 }
 
+function renderFutureLayer() {
+  if (!futureLayer) return;
+  futureLayer.classList.toggle("future-hidden", !state.scenarioVisible);
+  futureLayer.innerHTML = `
+    <div class="future-band-label">
+      <span>Futuro prossimo</span>
+      <strong>2026-2035</strong>
+    </div>
+    ${lanes
+      .map((lane) => {
+        const scenario = laneFutureScenarios[lane.id];
+        if (!scenario) return "";
+        const active = state.activeLanes.has(lane.id);
+        const matches = futureScenarioMatches(lane, scenario);
+        const hidden = !active || !matches;
+        return `
+          <article
+            class="future-card ${hidden ? "future-card-hidden" : ""}"
+            style="top:${lane.y - 54}px;--future-color:${lane.color}"
+            data-lane="${escapeAttr(lane.id)}"
+          >
+            <div class="future-card-head">
+              <span class="future-horizon">${escapeHtml(scenario.horizon)}</span>
+              <span class="future-lane">${escapeHtml(shortenLaneLabel(lane.label))}</span>
+            </div>
+            <h4>${escapeHtml(scenario.title)}</h4>
+            <p>${escapeHtml(scenario.summary)}</p>
+            <p class="future-signals"><strong>Segnali:</strong> ${escapeHtml(scenario.signals)}</p>
+            <div class="future-impacts">${renderScenarioImpactChips(scenario.impacts)}</div>
+          </article>
+        `;
+      })
+      .join("")}
+  `;
+}
+
+function futureScenarioMatches(lane, scenario) {
+  const query = state.query.trim().toLowerCase();
+  if (!query) return true;
+  const impactText = (scenario.impacts || [])
+    .map((key) => impactCatalog[key]?.label || key)
+    .join(" ");
+  const text = `${lane.label} ${scenario.title} ${scenario.summary} ${scenario.signals} ${impactText}`.toLowerCase();
+  return text.includes(query);
+}
+
+function shortenLaneLabel(label) {
+  return String(label)
+    .replace("Comunicazione ", "Com. ")
+    .replace("informativa e documentale", "info e documentale")
+    .replace("Ricerca e produzione di conoscenza", "Ricerca e conoscenza")
+    .replace("Audiovisivo: cinema, TV e video", "Audiovisivo")
+    .replace("Economia, moneta e finanza", "Economia e finanza");
+}
+
+function renderScenarioImpactChips(keys = []) {
+  return keys
+    .map((key) => {
+      const impact = impactCatalog[key];
+      if (!impact) return "";
+      return `
+        <span class="impact-chip compact-impact" style="--impact-color:${impact.color}" title="${escapeAttr(impact.label)}">
+          <span class="impact-emoji">${escapeHtml(impact.emoji)}</span>
+          ${escapeHtml(impact.label)}
+        </span>
+      `;
+    })
+    .join("");
+}
+
 function renderScenarioDock() {
   const track = futureScenarioTracks[state.scenarioTrack] || futureScenarioTracks.ai;
   scenarioTitle.textContent = track.title;
@@ -1672,6 +1914,7 @@ function renderChromeVisibility() {
   appShell.classList.toggle("sidebar-hidden", !state.sidebarVisible);
   appShell.classList.toggle("topbar-hidden", !state.topbarVisible);
   appShell.classList.toggle("scenario-hidden", !state.scenarioVisible);
+  if (futureLayer) futureLayer.classList.toggle("future-hidden", !state.scenarioVisible);
 
   toggleSidebarBtn.textContent = state.sidebarVisible ? "Nascondi menu" : "Mostra menu";
   toggleTopbarBtn.textContent = state.topbarVisible ? "Nascondi alto" : "Mostra alto";
@@ -1884,6 +2127,7 @@ function setupEvents() {
     renderFilters();
     renderNodes();
     renderFlows();
+    renderFutureLayer();
     renderStats();
   });
 
@@ -1893,6 +2137,7 @@ function setupEvents() {
     renderFilters();
     renderNodes();
     renderFlows();
+    renderFutureLayer();
     renderStats();
   });
 
@@ -1900,6 +2145,7 @@ function setupEvents() {
     state.query = event.target.value;
     renderNodes();
     renderFlows();
+    renderFutureLayer();
     renderStats();
   });
 
@@ -1936,6 +2182,7 @@ function setupEvents() {
 
   toggleScenarioBtn.addEventListener("click", () => {
     state.scenarioVisible = !state.scenarioVisible;
+    renderFutureLayer();
     renderChromeVisibility();
     saveState();
   });
@@ -1979,6 +2226,7 @@ function setupEvents() {
     renderLanes();
     renderNodes();
     renderFlows();
+    renderFutureLayer();
     renderStats();
   });
 

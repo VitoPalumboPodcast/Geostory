@@ -8,7 +8,7 @@
   --accent-strong: #0b6f5a;
   --danger: #b32634;
   --shadow: 0 18px 42px rgba(28, 36, 29, 0.14);
-  --world-width: 2600px;
+  --world-width: 2900px;
   --world-height: 4500px;
   --node-width: 176px;
   --node-height: 92px;
@@ -649,6 +649,7 @@ button:active {
 
 .flows,
 .lanes-layer,
+.future-layer,
 .nodes-layer,
 .time-axis {
   position: absolute;
@@ -690,6 +691,15 @@ button:active {
 .time-axis {
   z-index: 2;
   pointer-events: none;
+}
+
+.future-layer {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.future-layer.future-hidden {
+  opacity: 0;
 }
 
 .nodes-layer {
@@ -797,6 +807,112 @@ button:active {
   overflow: visible;
   text-overflow: clip;
   text-transform: uppercase;
+}
+
+.future-band-label {
+  position: absolute;
+  top: 22px;
+  left: 190px;
+  width: 248px;
+  padding: 0.45rem 0.62rem;
+  border: 1px solid rgba(16, 94, 72, 0.22);
+  border-radius: 8px;
+  color: var(--accent-strong);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 12px 26px rgba(28, 36, 29, 0.08);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.future-band-label span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.future-band-label strong {
+  display: block;
+  margin-top: 0.08rem;
+}
+
+.future-card {
+  position: absolute;
+  left: 190px;
+  box-sizing: border-box;
+  width: 252px;
+  min-height: 132px;
+  padding: 0.58rem 0.62rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--future-color) 22%, rgba(220, 229, 216, 0.9));
+  border-left: 5px solid var(--future-color);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(250, 252, 248, 0.88)),
+    color-mix(in srgb, var(--future-color) 7%, white);
+  box-shadow: 0 14px 28px rgba(28, 36, 29, 0.1);
+  transition: opacity 150ms ease;
+}
+
+.future-card-hidden {
+  opacity: 0;
+}
+
+.future-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.26rem;
+}
+
+.future-horizon,
+.future-lane {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.58rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.future-horizon {
+  flex-shrink: 0;
+  color: var(--future-color);
+}
+
+.future-lane {
+  color: var(--muted);
+}
+
+.future-card h4 {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.1;
+}
+
+.future-card p {
+  margin: 0.24rem 0 0;
+  color: var(--text);
+  font-size: 0.61rem;
+  line-height: 1.24;
+}
+
+.future-signals {
+  color: var(--muted) !important;
+}
+
+.future-impacts {
+  display: flex;
+  gap: 0.22rem;
+  margin-top: 0.34rem;
+}
+
+.future-impacts .impact-chip {
+  max-width: 76px;
+  min-height: 17px;
+  padding: 0.07rem 0.24rem;
+  font-size: 0.54rem;
 }
 
 .node {
