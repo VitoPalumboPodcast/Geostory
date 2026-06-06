@@ -1,8 +1,8 @@
 const WORLD = {
   width: 2900,
   height: 4500,
-  nodeWidth: 176,
-  nodeHeight: 92,
+  nodeWidth: 194,
+  nodeHeight: 104,
   minZoom: 0.05,
   maxZoom: 5
 };
@@ -751,8 +751,122 @@ const coloredIconEmoji = {
   paint: "🎨",
   hand: "✋",
   museum: "🏛️",
-  sparkles: "✨"
+  sparkles: "✨",
+  avatar: "🧑‍💻",
+  memo: "📝",
+  fax: "📠",
+  satellite: "🛰️",
+  megaphone: "📢",
+  scroll: "📜",
+  abacus: "🧮",
+  calculator: "🔢",
+  microscope: "🔬",
+  dna: "🧬",
+  pill: "💊",
+  stethoscope: "🩺",
+  brain: "🧠",
+  eye: "👁️",
+  moneybag: "💰",
+  bank: "🏦",
+  shopping: "🛍️",
+  package: "📦",
+  rocket: "🚀",
+  ship: "🚢",
+  bicycle: "🚲",
+  bus: "🚌",
+  ballot: "🗳️",
+  handshake: "🤝",
+  mask: "🎭",
+  palette: "🎨",
+  microphone: "🎙️",
+  headphones: "🎧",
+  piano: "🎹",
+  bookopen: "📖",
+  clipboard: "📋",
+  database: "🗄️",
+  folder: "🗂️",
+  lock: "🔐",
+  siren: "🚨",
+  explosion: "💥",
+  skull: "☠️",
+  atom: "⚛️",
+  battery: "🔋",
+  oil: "🛢️",
+  pickaxe: "⛏️",
+  hammer: "🔨",
+  joystick: "🕹️",
+  trophy: "🏆",
+  mapscroll: "🗺️",
+  crown: "👑",
+  family: "👪",
+  seedling: "🌱"
 };
+
+const contextualIconRules = [
+  { icon: "phone", pattern: /telefono|telegrafo|amplificazione|cellulari/i },
+  { icon: "social", pattern: /social media|social\b|piattaforme|instagram|tiktok|blog|microblogging/i },
+  { icon: "tv", pattern: /tv|televis|palinsesto/i },
+  { icon: "newspaper", pattern: /giornali|stampa periodica|riviste|quotidiani|periodici/i },
+  { icon: "university", pattern: /scuola|universit|educaz|apprendimento|tutor|student/i },
+  { icon: "public", pattern: /piazza|opinione pubblica|pubblico di massa/i },
+  { icon: "ritual", pattern: /rituali|formule|oratoria|rito/i },
+  { icon: "megaphone", pattern: /microtarget|propaganda|pubblicita|spot|campagne|manifesti|proclami|araldo/i },
+  { icon: "myth", pattern: /miti|epica|canti orali|racconto orale|cantastorie/i },
+  { icon: "avatar", pattern: /avatar|assistenti vocali|agenti personali|risposte automatiche|agent/i },
+  { icon: "brain", pattern: /\bai\b|intelligenza artificiale|cognitiv|sintesi automatica|scrittura assistita|stili sintetici|generativ|automatic|algoritm/i },
+  { icon: "mask", pattern: /deepfake|avatar|teatro|drama|personaggi|autorialita|attori digitali/i },
+  { icon: "chat", pattern: /chat|whatsapp|sms|meme|vocali|videochiamate/i },
+  { icon: "fax", pattern: /fax|segreteria|primi cellulari/i },
+  { icon: "mail", pattern: /posta|lettere|cartoline|sigilli|messaggeri/i },
+  { icon: "scroll", pattern: /editti|iscrizioni|poemi|testi sacri|contratti|catasti|leggi/i },
+  { icon: "clipboard", pattern: /verbali|report|modulistica|registri|fascicoli|documenti/i },
+  { icon: "database", pattern: /database|archivi|cloud|wiki|memorie sintetiche|archivi interrogabili/i },
+  { icon: "bookopen", pattern: /ebook|fanfiction|blog|romanzo|editoria|bestseller|letteratura/i },
+  { icon: "palette", pattern: /pittura|disegno|immagine|arti visive|simbolizzare|generare la realta/i },
+  { icon: "camera", pattern: /fotografia|dagherrotipo|catturare la realta|fotocamere/i },
+  { icon: "film", pattern: /cinema|video|pellicola|registrare la realta|audiovisiv|montaggio/i },
+  { icon: "microphone", pattern: /voce|radio|registrazioni|doppiaggio|cloni vocali/i },
+  { icon: "headphones", pattern: /streaming|playlist|ascolto|mp3|cd/i },
+  { icon: "piano", pattern: /musica|partiture|notazione|canto|ritmo|liuteria|suno/i },
+  { icon: "microscope", pattern: /ricerca|scoperta|laboratori|ipotesi|review|letteratura scientifica/i },
+  { icon: "dna", pattern: /genomica|bioingegneria|biometr|farmaci progettati/i },
+  { icon: "stethoscope", pattern: /diagnosi|medicina|telemedicina|sanita|cliniche/i },
+  { icon: "pill", pattern: /farmaci|vaccin|terapie|cura/i },
+  { icon: "abacus", pattern: /abaco|conteggi|calcolo manuale|conti/i },
+  { icon: "calculator", pattern: /calcolatrici|foglio elettronico|simulazioni|digital twin|quantistico/i },
+  { icon: "software", pattern: /software|programmazione|codice|repo|self-healing|app/i },
+  { icon: "lock", pattern: /cyber|sicurezza|passkey|identita digitale|protezione|privacy/i },
+  { icon: "battery", pattern: /batterie|storage|elettric|rete elettrica|data center|smart grid/i },
+  { icon: "atom", pattern: /nucleare|fusione|smr|atomo/i },
+  { icon: "oil", pattern: /petrolio|carbone|fossil/i },
+  { icon: "fire", pattern: /fuoco|combustione/i },
+  { icon: "moneybag", pattern: /moneta|credito|finanza|mercati|trading|borsa/i },
+  { icon: "bitcoin", pattern: /bitcoin|blockchain|defi|smart contract|token/i },
+  { icon: "card", pattern: /pagamenti|cbdc|stablecoin|moneta elettronica/i },
+  { icon: "shopping", pattern: /e-commerce|marketplace|consumismo|commercio/i },
+  { icon: "package", pattern: /logistica|consegna|produzione|catena/i },
+  { icon: "factory", pattern: /fabbrica|industriale|automazione dei task|lavoro|produzione/i },
+  { icon: "robot", pattern: /robot|robotaxi|autonom|automazione/i },
+  { icon: "drone", pattern: /drone|sciami|corridoi drone/i },
+  { icon: "car", pattern: /auto|guida|mobilita autonoma|robotaxi/i },
+  { icon: "train", pattern: /treno|ferrovia/i },
+  { icon: "ship", pattern: /nave|mare|naval|sottomarin/i },
+  { icon: "rocket", pattern: /spazio|satellit|orbitale/i },
+  { icon: "siren", pattern: /allarme|emergenza|sicurezza predittiva/i },
+  { icon: "explosion", pattern: /guerra|conflitto|armi|ipersonic|energia diretta|escalation/i },
+  { icon: "skull", pattern: /letali|trauma|nucleare|morte/i },
+  { icon: "bow", pattern: /arco|frecce|lance|corpo a corpo/i },
+  { icon: "shield", pattern: /scudo|difesa|protezione|contro-droni/i },
+  { icon: "law", pattern: /diritto|legale|responsabilita|giudizi|norme|tribunal/i },
+  { icon: "ballot", pattern: /voto|elezioni|democrazia/i },
+  { icon: "government", pattern: /governo|istituzioni|stati|pubblici|sovranita/i },
+  { icon: "handshake", pattern: /baratto|dono|reciprocita|contratti/i },
+  { icon: "trophy", pattern: /sport|competizione|gioco/i },
+  { icon: "joystick", pattern: /videogioco|giochi|mondi generativi|npc|intrattenimento/i },
+  { icon: "empathy", pattern: /benessere|coach|compagni|salute mentale|relazioni/i },
+  { icon: "watch", pattern: /wearable|smart watch|monitoraggio/i },
+  { icon: "leaf", pattern: /natura|rinnovabili|sostenibilita|clima/i }
+];
 
 const scenarioSources = {
   stanford: {
@@ -1504,8 +1618,21 @@ function renderImpactTags(item) {
 }
 
 function resolveIconName(item) {
-  if (item.iconKey && item.iconKey !== "auto" && iconPaths[item.iconKey]) return item.iconKey;
-  return nodeIconNames[item.id] || laneDefaultIcons[item.lane] || "sparkles";
+  const seededIcon = item.icon || laneDefaultIcons[item.lane] || "";
+  const manuallyPicked = item.iconKey && item.iconKey !== "auto" && item.iconKey !== seededIcon;
+  if (manuallyPicked && isKnownIcon(item.iconKey)) return item.iconKey;
+  return inferContextualIconName(item) || nodeIconNames[item.id] || seededIcon || laneDefaultIcons[item.lane] || "sparkles";
+}
+
+function isKnownIcon(iconName) {
+  return Boolean(iconPaths[iconName] || coloredIconEmoji[iconName]);
+}
+
+function inferContextualIconName(item) {
+  const lane = getLane(item.lane);
+  const text = `${item.id} ${item.label} ${item.notes || ""} ${lane.label}`.toLowerCase();
+  const rule = contextualIconRules.find((entry) => entry.pattern.test(text));
+  return rule?.icon || "";
 }
 
 function renderIcon(item) {
