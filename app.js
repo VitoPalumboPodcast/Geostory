@@ -754,6 +754,232 @@ const coloredIconEmoji = {
   sparkles: "✨"
 };
 
+const scenarioSources = {
+  stanford: {
+    label: "Stanford AI Index 2026",
+    url: "https://hai.stanford.edu/ai-index/2026-ai-index-report"
+  },
+  epoch: {
+    label: "Epoch AI",
+    url: "https://epoch.ai/topics/future-of-ai"
+  },
+  oecd: {
+    label: "OECD AI futures",
+    url: "https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/11/assessing-potential-future-artificial-intelligence-risks-benefits-and-policy-imperatives_8a491447/3f4e3dfb-en.pdf"
+  },
+  imf: {
+    label: "IMF scenario AI 2026",
+    url: "https://www.imf.org/-/media/files/publications/imf-notes/2026/english/insea2026002.pdf"
+  },
+  ai2027: {
+    label: "AI Futures / AI 2027",
+    url: "https://ai-2027.com/scenario.pdf"
+  },
+  natoHybrid: {
+    label: "NATO hybrid threats",
+    url: "https://www.nato.int/cps/uk/natohq/topics_156338.htm"
+  },
+  natoCog: {
+    label: "NATO ACT cognitive warfare",
+    url: "https://www.act.nato.int/activities/cognitive-warfare/"
+  },
+  darpaMosaic: {
+    label: "DARPA Mosaic Warfare",
+    url: "https://www.darpa.mil/news/features/mosaic-warfare"
+  },
+  atlantic: {
+    label: "Atlantic Council algorithmic warfare",
+    url: "https://www.atlanticcouncil.org/in-depth-research-reports/report/how-nato-can-integrate-ai-to-prevail-in-future-algorithmic-warfare/"
+  },
+  rand: {
+    label: "RAND Future of Warfare 2030",
+    url: "https://www.rand.org/content/dam/rand/pubs/research_reports/RR2800/RR2849z1/RAND_RR2849z1.pdf"
+  },
+  allegato: {
+    label: "Allegato: guerra ibrida, liminale, cognitiva",
+    url: ""
+  }
+};
+
+const futureScenarioTracks = {
+  ai: {
+    title: "AI / AGI / superintelligenza",
+    subtitle: "Sequenza prudente di scenari 2026-2035: automazione agentica, ricerca automatizzata, AGI controversa, possibili salti verso superintelligenza.",
+    color: "#7c3aed",
+    sources: ["stanford", "epoch", "oecd", "imf", "ai2027"],
+    events: [
+      {
+        year: 2026,
+        confidence: "alta",
+        title: "Agenti operativi, non ancora AGI condivisa",
+        summary: "I modelli diventano collaboratori continui per codice, analisi, documenti e decision support. Il salto reale e organizzativo: workflow, compliance, energia e fiducia contano quanto la capacita del modello.",
+        signals: "Adozione aziendale, agenti con memoria, costi di inferenza in calo, strategie nazionali e data center sovrani.",
+        impacts: ["delega", "lavoro", "privacy", "sovraccarico"]
+      },
+      {
+        year: 2027,
+        confidence: "media",
+        title: "Ricerca assistita e primi agenti scientifici robusti",
+        summary: "Scenario accreditato ma non certo: sistemi capaci di generare ipotesi, leggere letteratura, scrivere codice sperimentale e accelerare R&D in domini delimitati.",
+        signals: "Benchmark scientifici, agenti che completano task lunghi, validazione esterna dei risultati, primi incidenti da autonomia mal controllata.",
+        impacts: ["creativita", "delega", "sicurezza", "disuguaglianza"]
+      },
+      {
+        year: 2028,
+        confidence: "media-bassa",
+        title: "AI researcher automatizzato: soglia critica",
+        summary: "Nello scenario rapido, laboratori e governi trattano l'AI researcher come moltiplicatore strategico. In scenari piu lenti resta una suite di strumenti potenti ma supervisionati.",
+        signals: "Automazione di coding e ricerca AI, audit indipendenti, restrizioni su pesi dei modelli, controlli export su chip e data center.",
+        impacts: ["delega", "accelerazione", "controllo", "ansia"]
+      },
+      {
+        year: 2029,
+        confidence: "media",
+        title: "Automazione del lavoro cognitivo remoto",
+        summary: "Molti compiti impiegatizi diventano orchestrabili da agenti. L'impatto dipende meno dal singolo modello e piu dalla capacita delle organizzazioni di ridisegnare processi e responsabilita.",
+        signals: "Sostituzione di task, non solo assistenza; contratti con agenti; nuove metriche di produttivita; contenziosi su responsabilita.",
+        impacts: ["lavoro", "disuguaglianza", "delega", "controllo"]
+      },
+      {
+        year: 2030,
+        confidence: "media",
+        title: "AI infrastrutturale e rischio sistemico",
+        summary: "L'AI diventa strato operativo di sanita, finanza, istruzione, sicurezza e burocrazia. Cresce il valore della resilienza: fallback umani, audit, tracciabilita e ridondanza.",
+        signals: "AI in infrastrutture critiche, standard di sicurezza, assicurazioni per rischio AI, incidenti concatenati da agenti interconnessi.",
+        impacts: ["sicurezza", "privacy", "controllo", "cura"]
+      },
+      {
+        year: 2031,
+        confidence: "bassa",
+        title: "Pressione su energia, chip e dati",
+        summary: "Se lo scaling continua, il collo di bottiglia si sposta su energia, supply chain, dati di qualita, verifiche scientifiche e governance dei sistemi multi-agente.",
+        signals: "Accordi energetici per data center, chip dedicati, uso massiccio di dati sintetici, nuovi mercati della verifica.",
+        impacts: ["sostenibilita", "disuguaglianza", "sicurezza", "accelerazione"]
+      },
+      {
+        year: 2032,
+        confidence: "bassa",
+        title: "AGI debole o generalita pratica",
+        summary: "Possibile comparsa di sistemi generalmente competenti in molte attivita digitali, ma l'etichetta AGI resta contestata: corpo, causalita, affidabilita e autonomia fisica sono ancora variabili decisive.",
+        signals: "Agenti che imparano nuovi software, coordinano team di agenti, superano test cross-domain e restano affidabili per settimane.",
+        impacts: ["delega", "lavoro", "autenticita", "sicurezza"]
+      },
+      {
+        year: 2033,
+        confidence: "bassa",
+        title: "Mediana di alcune previsioni crowdsourced per AGI",
+        summary: "Alcune previsioni aggregate hanno collocato la prima AI generale intorno ai primi anni 2030, mentre survey di esperti restano spesso piu tarde. La mappa deve mostrare questa divergenza.",
+        signals: "Risoluzione di forecast pubblici, definizioni legali di AGI, test indipendenti su autonomia, economic value e robustezza.",
+        impacts: ["ansia", "controllo", "disuguaglianza", "creativita"]
+      },
+      {
+        year: 2034,
+        confidence: "molto bassa",
+        title: "Possibile divario AGI-superintelligenza",
+        summary: "Se la ricerca AI viene automatizzata davvero, il passaggio da AGI a sistemi superumani potrebbe essere breve. Se i ritorni diminuiscono, resta invece una crescita potente ma non esplosiva.",
+        signals: "AI che migliora architetture AI, scoperta automatica di algoritmi, fallimenti o successi di alignment su agenti autonomi.",
+        impacts: ["sicurezza", "escalation", "delega", "controllo"]
+      },
+      {
+        year: 2035,
+        confidence: "molto bassa",
+        title: "Biforcazione: AI governata o vantaggio strategico instabile",
+        summary: "La questione non e solo tecnica: il mondo reale dipende da accordi internazionali, distribuzione dei benefici, accesso a calcolo, controllo militare e capacita di spegnere o contenere sistemi pericolosi.",
+        signals: "Trattati sul calcolo, ispezioni, incidenti geopolitici legati a modelli, nuovi equilibri tra stati e grandi laboratori.",
+        impacts: ["controllo", "sicurezza", "disuguaglianza", "sostenibilita"]
+      }
+    ]
+  },
+  war: {
+    title: "Guerra ibrida, liminale e algoritmica",
+    subtitle: "Dalla soglia grigia alla guerra cognitiva, autonoma e multi-dominio: non solo droni e cyber, ma percezione, tempo, spazio e comando algoritmico.",
+    color: "#991b1b",
+    sources: ["allegato", "natoHybrid", "natoCog", "darpaMosaic", "atlantic", "rand"],
+    events: [
+      {
+        year: 2026,
+        confidence: "alta",
+        title: "Normalizzazione della zona grigia",
+        summary: "Guerra ibrida come combinazione di cyber, proxy, sabotaggi, economia e disinformazione; guerra liminale come gestione della soglia per restare sotto la risposta militare aperta.",
+        signals: "Attacchi a infrastrutture, campagne cognitive, sabotaggi negabili, pressione su energia, cavi, porti, satelliti e opinione pubblica.",
+        impacts: ["ansia", "disinformazione", "controllo", "sicurezza"]
+      },
+      {
+        year: 2027,
+        confidence: "alta",
+        title: "Droni, contro-droni e autonomia tattica",
+        summary: "I droni restano centrali ma diventano parte di un ecosistema: sensori, guerra elettronica, munizioni circuitanti, difese a energia diretta e AI per targeting.",
+        signals: "Costo per abbattimento, sciami piccoli, jam-resistance, sistemi laser/microonde, regole human-on-the-loop.",
+        impacts: ["escalation", "trauma", "lavoro", "sicurezza"]
+      },
+      {
+        year: 2028,
+        confidence: "media",
+        title: "Comando assistito da AI",
+        summary: "Il C2 integra AI per sintesi intelligence, suggerimento piani, priorita bersagli e logistica. Il rischio e l'automazione della pressione decisionale: tempi piu brevi, meno spazio politico.",
+        signals: "Decision support certificati, esercitazioni NATO, audit su bias di targeting, incidenti da fiducia eccessiva nei sistemi.",
+        impacts: ["delega", "controllo", "escalation", "attenzione"]
+      },
+      {
+        year: 2029,
+        confidence: "media",
+        title: "Mosaic warfare e kill web resilienti",
+        summary: "La logica passa da piattaforme grandi a combinazioni riconfigurabili di sensori, effettori e nodi sacrificabili. Se un nodo cade, il mosaico si ricompone.",
+        signals: "Sistemi interoperabili, sciami misti aria-mare-terra, reti mesh, software-defined warfare, procurement modulare.",
+        impacts: ["accelerazione", "sicurezza", "controllo", "lavoro"]
+      },
+      {
+        year: 2030,
+        confidence: "media",
+        title: "Guerra cognitiva come dominio stabile",
+        summary: "Il bersaglio non e solo il dato ma il processo cognitivo: fiducia, identita, paura, coesione sociale, interpretazione della realta.",
+        signals: "Deepfake persistenti, microtargeting psicologico, attacchi alla fiducia istituzionale, resilienza cognitiva nelle dottrine militari.",
+        impacts: ["disinformazione", "ansia", "attenzione", "trauma"]
+      },
+      {
+        year: 2031,
+        confidence: "media-bassa",
+        title: "Sciami autonomi e contro-sciami",
+        summary: "La questione diventa scalare: non il singolo drone, ma gruppi che si coordinano, si riorganizzano e saturano difese. Il controllo umano diretto diventa sempre piu difficile.",
+        signals: "Test di autonomia collettiva, munizioni low-cost, counter-swarm, norme internazionali su LAWS.",
+        impacts: ["escalation", "trauma", "delega", "sicurezza"]
+      },
+      {
+        year: 2032,
+        confidence: "bassa",
+        title: "Spazio orbitale e infrastrutture invisibili",
+        summary: "Satelliti, PNT, ISR, cavi sottomarini e cloud militare diventano bersagli permanenti. La guerra puo colpire la societa senza apparire come invasione.",
+        signals: "Satelliti ispettori, jamming, spoofing GPS, assicurazioni spaziali, protezione di cavi e cloud sovrani.",
+        impacts: ["sicurezza", "controllo", "ansia", "sovraccarico"]
+      },
+      {
+        year: 2033,
+        confidence: "bassa",
+        title: "Ipersonico, energia diretta e tempo compresso",
+        summary: "Velocita e spettro elettromagnetico comprimono la finestra decisionale. Difesa e attacco si spostano verso luce, microonde, automazione e pre-delega.",
+        signals: "Laser operativi, microonde anti-elettronica, ipersonico manovrante, C2 con secondi di reazione.",
+        impacts: ["escalation", "sicurezza", "delega", "ansia"]
+      },
+      {
+        year: 2034,
+        confidence: "molto bassa",
+        title: "Autonomia letale distribuita",
+        summary: "Scenario critico: piattaforme autonome su aria, terra, mare e spazio eseguono parti della catena decisionale. Il nodo politico diventa chi autorizza, chi verifica, chi risponde.",
+        signals: "Doctrine human-out-of-the-loop, responsabilita legale, incidenti transfrontalieri, sistemi autonomi navali e sottomarini.",
+        impacts: ["trauma", "controllo", "sicurezza", "escalation"]
+      },
+      {
+        year: 2035,
+        confidence: "molto bassa",
+        title: "Guerra algoritmica sotto soglia permanente",
+        summary: "Il futuro piu plausibile non e una guerra totale continua, ma pressione permanente: soglie liminali, AI, informazione, spazio, economia e infrastrutture in stato di allarme cronico.",
+        signals: "Trattati su autonomia, sistemi di attribuzione, difesa civile digitale, crisi ripetute sotto Articolo 5 o soglie equivalenti.",
+        impacts: ["ansia", "controllo", "sicurezza", "disinformazione"]
+      }
+    ]
+  }
+};
+
 let state = {
   nodes: [],
   selectedId: null,
@@ -764,7 +990,9 @@ let state = {
   zoom: 0.82,
   interactionMode: "navigate",
   sidebarVisible: true,
-  topbarVisible: true
+  topbarVisible: true,
+  scenarioVisible: true,
+  scenarioTrack: "ai"
 };
 
 let dragState = null;
@@ -787,9 +1015,14 @@ const flowsToggle = document.getElementById("flowsToggle");
 const impactsToggle = document.getElementById("impactsToggle");
 const impactLegend = document.getElementById("impactLegend");
 const modeButtons = document.querySelectorAll("[data-mode]");
+const scenarioTrackButtons = document.querySelectorAll("[data-scenario-track]");
 const appShell = document.querySelector(".app-shell");
 const toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
 const toggleTopbarBtn = document.getElementById("toggleTopbarBtn");
+const toggleScenarioBtn = document.getElementById("toggleScenarioBtn");
+const scenarioTitle = document.getElementById("scenarioTitle");
+const scenarioContent = document.getElementById("scenarioContent");
+const scenarioSourcesEl = document.getElementById("scenarioSources");
 
 function node(id, lane, label, era, x, y, icon, notes) {
   return {
@@ -846,6 +1079,8 @@ function loadState() {
     state.interactionMode = parsed.interactionMode === "edit" ? "edit" : "navigate";
     state.sidebarVisible = parsed.sidebarVisible !== false;
     state.topbarVisible = parsed.topbarVisible !== false;
+    state.scenarioVisible = parsed.scenarioVisible !== false;
+    state.scenarioTrack = futureScenarioTracks[parsed.scenarioTrack] ? parsed.scenarioTrack : "ai";
     if (needsMigration) saveState();
   } catch {
     state.nodes = structuredClone(seedNodes);
@@ -901,7 +1136,9 @@ function saveState() {
       selectedId: state.selectedId,
       interactionMode: state.interactionMode,
       sidebarVisible: state.sidebarVisible,
-      topbarVisible: state.topbarVisible
+      topbarVisible: state.topbarVisible,
+      scenarioVisible: state.scenarioVisible,
+      scenarioTrack: state.scenarioTrack
     })
   );
 }
@@ -915,6 +1152,7 @@ function render() {
   renderFlows();
   renderInspector();
   renderStats();
+  renderScenarioDock();
   applyZoom();
   renderInteractionMode();
   renderChromeVisibility();
@@ -1228,6 +1466,65 @@ function renderStats() {
   stats.textContent = `${visibleCount} nodi visibili / ${state.nodes.length} totali`;
 }
 
+function renderScenarioDock() {
+  const track = futureScenarioTracks[state.scenarioTrack] || futureScenarioTracks.ai;
+  scenarioTitle.textContent = track.title;
+  scenarioTrackButtons.forEach((button) => {
+    const active = button.dataset.scenarioTrack === state.scenarioTrack;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+
+  scenarioContent.innerHTML = `
+    <p class="scenario-subtitle">${escapeHtml(track.subtitle)}</p>
+    <div class="scenario-years" style="--scenario-color:${track.color}">
+      ${track.events.map(renderScenarioEvent).join("")}
+    </div>
+  `;
+
+  scenarioSourcesEl.innerHTML = `
+    <span>Fonti e tracce:</span>
+    ${track.sources
+      .map((sourceKey) => {
+        const source = scenarioSources[sourceKey];
+        if (!source) return "";
+        if (!source.url) return `<span class="source-chip">${escapeHtml(source.label)}</span>`;
+        return `<a class="source-chip" href="${escapeAttr(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.label)}</a>`;
+      })
+      .join("")}
+  `;
+}
+
+function renderScenarioEvent(event) {
+  const impactMarkup = (event.impacts || [])
+    .map((key) => {
+      const impact = impactCatalog[key];
+      if (!impact) return "";
+      return `
+        <span class="impact-chip compact-impact" style="--impact-color:${impact.color}" title="${escapeAttr(impact.label)}">
+          <span class="impact-emoji">${escapeHtml(impact.emoji)}</span>
+          ${escapeHtml(impact.label)}
+        </span>
+      `;
+    })
+    .join("");
+
+  return `
+    <article class="scenario-card">
+      <div class="scenario-year">${escapeHtml(event.year)}</div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-top">
+          <h4>${escapeHtml(event.title)}</h4>
+          <span class="confidence">${escapeHtml(event.confidence)}</span>
+        </div>
+        <p>${escapeHtml(event.summary)}</p>
+        <p class="scenario-signals"><strong>Segnali:</strong> ${escapeHtml(event.signals)}</p>
+        <div class="scenario-impacts">${impactMarkup}</div>
+      </div>
+    </article>
+  `;
+}
+
 function renderInspector() {
   const selected = getSelectedNode();
   if (!selected) {
@@ -1374,11 +1671,14 @@ function renderInteractionMode() {
 function renderChromeVisibility() {
   appShell.classList.toggle("sidebar-hidden", !state.sidebarVisible);
   appShell.classList.toggle("topbar-hidden", !state.topbarVisible);
+  appShell.classList.toggle("scenario-hidden", !state.scenarioVisible);
 
   toggleSidebarBtn.textContent = state.sidebarVisible ? "Nascondi menu" : "Mostra menu";
   toggleTopbarBtn.textContent = state.topbarVisible ? "Nascondi alto" : "Mostra alto";
+  toggleScenarioBtn.textContent = state.scenarioVisible ? "Nascondi scenari" : "Mostra scenari";
   toggleSidebarBtn.setAttribute("aria-pressed", state.sidebarVisible ? "true" : "false");
   toggleTopbarBtn.setAttribute("aria-pressed", state.topbarVisible ? "true" : "false");
+  toggleScenarioBtn.setAttribute("aria-pressed", state.scenarioVisible ? "true" : "false");
 }
 
 function getViewportCenterWorldPoint() {
@@ -1632,6 +1932,24 @@ function setupEvents() {
     state.topbarVisible = !state.topbarVisible;
     renderChromeVisibility();
     saveState();
+  });
+
+  toggleScenarioBtn.addEventListener("click", () => {
+    state.scenarioVisible = !state.scenarioVisible;
+    renderChromeVisibility();
+    saveState();
+  });
+
+  scenarioTrackButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const track = button.dataset.scenarioTrack;
+      if (!futureScenarioTracks[track]) return;
+      state.scenarioTrack = track;
+      state.scenarioVisible = true;
+      renderScenarioDock();
+      renderChromeVisibility();
+      saveState();
+    });
   });
 
   zoomInput.addEventListener("input", (event) => {
