@@ -396,18 +396,27 @@ button:active {
   pointer-events: none;
 }
 
-.flow-glow {
-  stroke-width: 11px;
+.flow-ribbon-shadow {
+  stroke-width: 24px;
   stroke-linecap: round;
-  opacity: 0.12;
+  stroke-linejoin: round;
+  opacity: 0.08;
   filter: url(#flowGlow);
 }
 
-.flow-path {
-  stroke-width: 3.4px;
+.flow-ribbon {
+  stroke-width: 14px;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: 0.58;
+  opacity: 0.22;
+}
+
+.flow-ribbon-light {
+  stroke-width: 3px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.16;
+  mix-blend-mode: screen;
 }
 
 .lanes-layer {

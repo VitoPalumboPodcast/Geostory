@@ -8,7 +8,7 @@ const WORLD = {
 };
 
 const STORAGE_KEY = "atlante-evolutivo-state";
-const STORAGE_VERSION = 13;
+const STORAGE_VERSION = 14;
 const LANE_START_Y = 130;
 const LANE_STEP_Y = 180;
 
@@ -1014,8 +1014,8 @@ function renderFlows() {
       ${lanes
         .map(
           (lane) => `
-            <marker id="arrow-${lane.id}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M0,0 L0,6 L9,3 z" fill="${lane.color}" opacity="0.62"></path>
+            <marker id="arrow-${lane.id}" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,8 L11,4 z" fill="${lane.color}" opacity="0.28"></path>
             </marker>
           `
         )
@@ -1049,8 +1049,9 @@ function renderFlows() {
             `C ${midX - bend * 0.28} ${midY}, ${x2 + bend} ${y2 - wave}, ${x2} ${y2}`
           ].join(" ");
           return `
-            <path class="flow-glow" d="${path}" fill="none" stroke="${lane.color}" />
-            <path class="flow-path" d="${path}" fill="none" stroke="${lane.color}" marker-end="url(#arrow-${lane.id})" />
+            <path class="flow-ribbon-shadow" d="${path}" fill="none" stroke="${lane.color}" />
+            <path class="flow-ribbon" d="${path}" fill="none" stroke="${lane.color}" marker-end="url(#arrow-${lane.id})" />
+            <path class="flow-ribbon-light" d="${path}" fill="none" stroke="${lane.color}" />
           `;
         })
         .join("");
